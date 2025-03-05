@@ -70,13 +70,35 @@ serviceBoxes.forEach((box, index) => {
 });
 
 // -----------project section----------------
-const projectBox = document.querySelectorAll(".project-box");
+const projectCard = document.querySelectorAll(".project-box .project-card");
 
-projectBox.forEach((box, index) => {
-  scrollReveal().reveal(box, {
+projectCard.forEach((box, index) => {
+  ScrollReveal().reveal(box, {
     ...scrollRevealOption,
     delay: 500 + index * 250,
   });
+});
+
+// ----------contact me-----------------
+const inputGroup = document.querySelectorAll(".input-group");
+
+inputGroup.forEach((inputbox, groupIndex) => {
+  const inputs = inputbox.querySelectorAll("input");
+  inputs.forEach((input, index) => {
+    ScrollReveal().reveal(input, {
+      // scrollRevealOption,
+      delay: 500 + groupIndex * 500 + index * 250,
+      origin: "left",
+      distance: "50px",
+    });
+  });
+});
+
+ScrollReveal().reveal(".contact .input-group-2", {
+  scrollRevealOption,
+  origin: "right",
+  delay: 1500,
+  distance: "50px",
 });
 
 let menuIcon = document.querySelector("#menu-icon");
