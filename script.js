@@ -1,3 +1,84 @@
+const scrollRevealOption = {
+  distance: "50px",
+  origin: "bottom",
+  duration: 500,
+};
+
+// header section
+ScrollReveal().reveal(".header", {
+  ...scrollRevealOption,
+  delay: 50,
+  origin: screenLeft,
+  distance: "2000px",
+  duration: 250,
+});
+
+// -----------home section----------------
+ScrollReveal().reveal(".home-content h1", {
+  ...scrollRevealOption,
+  delay: 250,
+});
+
+ScrollReveal().reveal(".home-img", {
+  ...scrollRevealOption,
+  delay: 500,
+  origin: screenLeft,
+});
+
+ScrollReveal().reveal(".home-content h3", {
+  ...scrollRevealOption,
+  delay: 750,
+});
+
+ScrollReveal().reveal(".home-content p", {
+  ...scrollRevealOption,
+  delay: 1000,
+});
+
+ScrollReveal().reveal(".home-content .social-icons", {
+  ...scrollRevealOption,
+  delay: 1250,
+});
+
+ScrollReveal().reveal(".home-content .btn-group", {
+  ...scrollRevealOption,
+  delay: 1500,
+});
+
+// -----------about section----------------
+ScrollReveal().reveal(".about-content", {
+  ...scrollRevealOption,
+  delay: 500,
+  origin: "right",
+});
+
+ScrollReveal().reveal(".about-img", {
+  ...scrollRevealOption,
+  origin: "left",
+  delay: 500,
+});
+
+// -----------services section----------------
+const serviceBoxes = document.querySelectorAll(".services-box");
+
+serviceBoxes.forEach((box, index) => {
+  ScrollReveal().reveal(box, {
+    ...scrollRevealOption,
+    origin: "right",
+    delay: 500 + index * 250, // Setiap box memiliki delay bertambah 250ms
+  });
+});
+
+// -----------project section----------------
+const projectBox = document.querySelectorAll(".project-box");
+
+projectBox.forEach((box, index) => {
+  scrollReveal().reveal(box, {
+    ...scrollRevealOption,
+    delay: 500 + index * 250,
+  });
+});
+
 let menuIcon = document.querySelector("#menu-icon");
 let navbar = document.querySelector(".navbar");
 
@@ -16,43 +97,54 @@ readMoreBtn.addEventListener("click", () => {
   readMoreBtn.textContent = isHiden ? "Read Less" : "Read More";
 });
 
-// --------------------emailjs---------------------
+// --------------------------------form contact me ---------------------
 document.addEventListener("DOMContentLoaded", () => {
-  emailjs.init("wLal8e1ddUye8tAaf"); // Ganti dengan Public Key dari EmailJS
+  const form = document.querySelector("form");
 
-  const contactForm = document.querySelector("form");
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // Mencegah form melakukan refresh halaman
 
-  contactForm.addEventListener("submit", (e) => {
-    e.preventDefault(); // Mencegah reload halaman
+    // Ambil nilai dari input
+    const name = document
+      .querySelector('input[placeholder="Full Name"]')
+      .value.trim();
+    const email = document
+      .querySelector('input[placeholder="Email"]')
+      .value.trim();
+    const mobile = document
+      .querySelector('input[placeholder="Mobile Number"]')
+      .value.trim();
+    const subject = document
+      .querySelector('input[placeholder="Subject"]')
+      .value.trim();
+    const message = document
+      .querySelector('textarea[placeholder="Your Message"]')
+      .value.trim();
 
-    // Ambil nilai input dari form
-    const formData = {
-      full_name: contactForm.querySelector("input[placeholder='Full Name']")
-        .value,
-      email: contactForm.querySelector("input[placeholder='Email']").value,
-      mobile_number: contactForm.querySelector(
-        "input[placeholder='Mobile Number']"
-      ).value,
-      subject: contactForm.querySelector("input[placeholder='Subject']").value,
-      message: contactForm.querySelector("textarea[placeholder='Your Message']")
-        .value,
-    };
+    // Validasi input (pastikan tidak ada yang kosong)
+    if (!name || !email || !mobile || !subject || !message) {
+      alert("Please fill in all fields before sending the message.");
+      return;
+    }
 
-    // Kirim data ke EmailJS
-    emailjs
-      .send(
-        "service_3tggrll",
-        "template_1v01t98",
-        formData,
-        "wLal8e1ddUye8tAaf"
-      )
-      .then(() => {
-        alert("Message sent successfully!");
-        contactForm.reset(); // Reset form setelah dikirim
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-        alert("Failed to send message. Please try again.");
-      });
+    // Format pesan untuk WhatsApp
+    const whatsappMessage = `Hello, my name is ${name}.
+📧 Email: ${email}
+📱 Mobile: ${mobile}
+📌 Subject: ${subject}
+
+📝 Message:
+${message}`;
+
+    // Nomor WhatsApp tujuan (ganti dengan nomor admin atau pemilik situs)
+    const phoneNumber = "6281214320665"; // Ganti dengan nomor WhatsApp yang ingin menerima pesan
+
+    // Buat URL WhatsApp
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      whatsappMessage
+    )}`;
+
+    // Arahkan ke WhatsApp
+    window.open(whatsappURL, "_blank");
   });
 });
